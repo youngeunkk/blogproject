@@ -1,85 +1,61 @@
 import { useState } from 'react';
 import './App.css';
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import Button from '@mui/material/Button';
 import HomeIcon from '@mui/icons-material/Home';
 import CreateIcon from '@mui/icons-material/Create';
 import MenuIcon from '@mui/icons-material/Menu';
-import SaveIcon from '@mui/icons-material/Save';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { CardContent, Typography, IconButton, Card } from '@mui/material';
+import {IconButton} from '@mui/material';
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
 
-function Navbar() {
+function Navbar(props) {
 
   return (
     <div className="Navbar">
-      <h3>Youngeun's Story</h3>
+      <button type="button" id="blogtitle" onClick={(event) => {
+        event.preventDefault();
+        props.onChangeHomeMode();
+      }}>Youngeun's Story</button>
     </div>
   )
 }
-function MiniRoom() {
+function Header(props) {
 
   return (
-    <miniroom>
-
-    </miniroom>
-
-  )
-} // 나중에 작업하기
-
-function Header({onChangeHomeMode, onChangeCreateMode, onChangeReadMode}) {
-
-  let navigate = useNavigate();
-
-  return (
-    <header>
-        <p>
-          <IconButton onClick={(event) => {
-            navigate('/');
-            event.preventDefault();
-            onChangeHomeMode();
-          }}>
-            <HomeIcon fontSize="large"/>
-          </IconButton>
-        </p>
-        <p>
-          <IconButton onClick={(event) => {
-            navigate('/create');
-            event.preventDefault();
-            onChangeCreateMode();
-          }}>
-            <CreateIcon fontSize="large"/>
-          </IconButton>
-        </p>
-        <p>
-          <IconButton onClick={(event)=> {
-            navigate('/read');
-            event.preventDefault();
-            onChangeReadMode();
-          }}>
-            <MenuIcon fontSize="large"/>
-          </IconButton>
-        </p>
-    </header>
+    <div className="header">
+      <IconButton onClick={(event) => {
+        event.preventDefault();
+        props.onChangeHomeMode();
+      }}>
+        <HomeIcon fontSize="large" sx={{ color: "white" }} />
+      </IconButton>&nbsp;&nbsp;
+      <IconButton onClick={(event) => {
+        event.preventDefault();
+        props.onChangeCreateMode();
+      }}>
+        <CreateIcon fontSize="large" sx={{ color: "white" }} />
+      </IconButton>&nbsp;&nbsp;
+      <IconButton onClick={(event) => {
+        event.preventDefault();
+        props.onChangeReadMode();
+      }}>
+        <MenuIcon fontSize="large" sx={{ color: "white" }} />
+      </IconButton>
+    </div>
   );
 }
 
-function Article(props) {   // 약간 상세보기 같은 거?
+function Article(props) {
+
   return (
-    props.lists === false ? <div className="listnull"><h2>텅 비어있음</h2></div> :
-    <div className='posts'>
-      <Card sx={{ width: 250, height : 180 }}>
-      <CardContent>
-      <Typography variant="h5">
-        {props.title}
-        </Typography>
-        <p>
-        <Typography variant="body3">
-        {props.body}
-        </Typography>
-        </p>
-      </CardContent>
-    </Card>
-    </div>
+    props.lists === false ? <div className="listnull"><h1>글이 존재하지 않습니다❕</h1></div> :
+      <div className='posts'>
+        <div className='titlearea'>
+          <h2>{props.title}</h2>
+        </div>
+          <p>{props.body}</p>
+      </div>
   );
 }
 
@@ -104,16 +80,14 @@ function Read(props) {
     );
   }
   return (
+    props.lists === false ? <></> :
     <div className='read'>
+      <h2>목록</h2>
       <ol>{lis}</ol>
     </div>
   );
 }
-
-
 function Create(props) {
-
-  let navigate = useNavigate();
 
   return (
     <div className="create">
@@ -124,14 +98,11 @@ function Create(props) {
           const body = event.target.body.value;
           props.onCreate(title, body);
           alert('저장되었습니다');
-          navigate('/read');
         }}
-      >      
-          <p><input type="text" id="title" name="title" placeholder="제목을 입력해주세요!" maxlength="10"/></p>
-          <textarea name="body" id="body" placeholder="내용을 입력해주세요!" rows="20" cols="80" maxlength="300"></textarea>
-          <IconButton type="submit">
-            <SaveIcon/>
-          </IconButton>
+      >
+        <p><input type="text" id="title" name="title" placeholder="제목을 작성해주세요!" maxLength="12"/></p>
+        <p><textarea name="body" id="body" placeholder="내용을 입력해주세요!" rows="20" cols="60" ></textarea></p>
+        <button type='submit' id="button">CREATE</button>
       </form>
     </div>
   );
@@ -166,21 +137,38 @@ function Update(props) {
           <textarea
             name="body"
             id="body"
-            placeholder="내용을 입력해주세요!" rows="20" cols="80"
+            placeholder="내용을 입력해주세요!" rows="20" cols="60"
             value={body}
             onChange={(event) => {
               setBody(event.target.value);
             }}
           ></textarea>
         </p>
-        <p>
-          <input type="submit" value="Update"></input>
-        </p>
+        <button type='submit'id="button">UPDATE</button>
       </form>
     </div>
   );
 }
 
+function MiniRoom() {
+
+  const [value, onChange] = useState(new Date());
+
+  return (
+    <div className='miniroom'>
+      <Calendar onChange={onChange} value={value} />
+    </div>
+  );
+}
+
+function Background() {
+  return (
+    <>
+      <div className="bg">
+      </div>
+    </>
+  )
+}
 
 
 function App() {
@@ -192,48 +180,54 @@ function App() {
   const [lists, setLists] = useState(false);
 
 
-
+  let bg = null;
   let content = null;
+  let readLists = null;
   let contextControl = null;
   if (mode === 'WELCOME') {
-    content = <MiniRoom/>; // 여기에 이제 미니홈피 들어설 예정 
+    content = <MiniRoom />;
+    bg = <Background />;
   } else if (mode === 'READ') {
-    let title,
-      body = null;
+    let title, body = null;
     for (let i = 0; i < topics.length; i++) {
       if (topics[i].id === id) {
         title = topics[i].title;
         body = topics[i].body;
       }
     }
-    content = <Article lists={lists} id={id} title={title} body={body}/>;
+    content = <Article lists={lists} id={id} title={title} body={body} />;
+    readLists = <Read lists={lists} topics={topics} onChangeReadMode={(_id) => {
+      setMode('READ');
+      setId(_id);
+    }}/>;
 
     contextControl = (
       <div className="contextControl" >
-          <IconButton href={'/update' + id}
+        <Button href={'/update' + id}
+          sx={{ color: "white" , bgcolor : 'black'}}
           onClick={(event) => {
             event.preventDefault();
             setMode('UPDATE');
-          }}>
-            <CreateIcon fontSize='large'/>
-          </IconButton> 
-          <IconButton type="button"
-            value="Delete"
-            onClick={() => {
-              const newTopics = [];
-              for (let i = 0; i < topics.length; i++) {
-                if (topics[i].id !== id) {
-                  newTopics.push(topics[i]);
-                }
+          }} startIcon={<CreateIcon/>}>
+            UPDATE
+        </Button>
+        <Button type="button"
+          value="Delete"
+          sx={{ color: "white" , bgcolor : 'black'}}
+          onClick={() => {
+            const newTopics = [];
+            for (let i = 0; i < topics.length; i++) {
+              if (topics[i].id !== id) {
+                newTopics.push(topics[i]);
               }
-              setTopics(newTopics);
-              setMode('WELCOME');
-            }}>
-            <DeleteIcon fontSize="large"/>
-          </IconButton>
+            }
+            setTopics(newTopics);
+          }} startIcon={<DeleteIcon/>}>
+            DELETE
+        </Button>
       </div>
     );
-    } else if (mode === 'CREATE') {
+  } else if (mode === 'CREATE') {
     content = (
       <Create
         onCreate={(_title, _body) => {
@@ -273,13 +267,15 @@ function App() {
           }
           setTopics(newTopics);
           setMode('READ');
-        }}/>
+        }} />
     );
   }
   return (
 
     <div className="App">
-      <Navbar/>
+      <Navbar onChangeHomeMode={() => {
+          setMode('WELCOME');
+        }}/>
       <Header
         onChangeHomeMode={() => {
           setMode('WELCOME');
@@ -290,21 +286,13 @@ function App() {
         onChangeReadMode={(_id) => {
           setMode('READ');
           setId(_id);
-        }}/>
-      <Routes>
-        <Route path="/read" element={
-          <Read
-          topics={topics}
-          onChangeReadMode={(_id) => {
-            setMode('READ');
-            setId(_id);
-          }}/>
-        } />
-      </Routes>
+        }} />
       <div className="wrap">
+        {readLists}
         {content}
-        {lists === false ? <div></div> : contextControl}
-     </div>
+        {bg}
+        {lists === false ? <></> : contextControl}
+      </div>
     </div>
   );
 }

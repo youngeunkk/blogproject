@@ -1,10 +1,22 @@
+@import url(https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css);
+
 .Navbar {
   background: black;
   width: 100%;
   display: flex;
   color: white;
-  padding: 20px;
+  padding: 30px;
   text-align: center;
+}
+
+#blogtitle {
+  background-color: transparent;
+  color: white;
+  width: 220px;
+  height: 60px;
+  font-size: 23px;
+  font-weight: bold;
+  cursor: pointer;
 }
 
 #title {
@@ -12,7 +24,7 @@
   border: none;
   outline: none;
   box-sizing: border-box;
-  font-family: 'Arvo';
+  color:black;
   font-size: 27px;
   height: 35px;
   left: 50%;
@@ -24,40 +36,83 @@
 
 #body {
   background-color: transparent;
-  border : 2px solid rgb(131, 128, 128);
+  border : 5px solid rgb(56, 52, 52);
   resize: none;
   margin-top: 100px;
-  font-size : 18px;
+  font-size : 20px;
 }
+
+#button {
+  cursor:pointer;
+  background: black;
+  color: white;
+  width: 150px;
+  height: 30px;
+  font-size: 18px;
+  border-radius: 30px;
+}
+
+#button:hover {
+  color:yellow;
+}
+
 
 form {
   text-align: center;
-  bottom : 150px;
   position: relative;
   align-content: space-between;
 }
 
 .posts {
   display: grid;
-  place-items: center;
+  grid-template-rows: 80px 200px;
+  border : 3px solid black;
+  width : 360px;
+  height : 360px;
+  margin: auto;
+}
+
+.titlearea {
+  border-bottom: 2px solid black;
+}
+
+.titlearea h2 {
+  font-size: 32px;
+  text-align: center;
 }
 
 .listnull {
+  margin-top: 200px;
   background-color: white;
   border: 2px solid black;
   color: black;
   height: 88px;
-  width: 300px;
-  margin: auto;
-  padding: 50px;
+  width: 100%;
   border-radius: 22px;
 }
-.listnull h2 {
+.listnull h1{
   text-align: center;
 }
 
 .contextControl {
+  margin-top: 5px;
   text-align: center;
+}
+.contextControl button {
+  margin-left: 10px;
+}
+
+.read {
+  float: right;
+  width: 400px;
+  height: 650px;
+  border: solid 2px black;
+  margin-right: 30px;
+}
+
+.read h2 {
+  text-align: center;
+  padding-left: 15px;
 }
 
 .read ol li {
@@ -69,7 +124,8 @@ form {
   background-color: black;
   color: white;
   display: inline-block;
-  width: 250px;
+  width: 325px;
+  height: 25px;
   text-align: center;
   margin: 8px;
   font-size: 20px;
@@ -80,36 +136,85 @@ form {
   color: yellow;
   text-decoration: underline;
 }
-/*
 
-.menu {
-  margin-top: 30px;
-  position: relative;
-}
-
-.login {
+.miniroom {
   float : right;
-  margin-right: 15px;
+  margin-right: 20px;
+  border: 3px solid black;
 }
 
-.posts {
-  z-index: auto;
-  position: absolute;
-  width: 1300px;
-  display: block;
-  border: 8px solid black;
-  padding: 20px;
-  margin-left: 200px;
+.header {
+  background: rgb(56, 52, 52);
+  width: 182px;
+  height: 100%;
+}
+
+input::placeholder {
+  color:rgb(139, 137, 137);
+}
+
+textarea::placeholder {
+  color:rgb(139, 137, 137);
 }
 
 
-h2 {
-  margin-left: 20px;
+
+body, #blogtitle, #title, #body, .posts {
+  font-family:'NanumSquare';
 }
 
 body {
+  background-color: rgb(238, 238, 238);
   overflow-x: hidden;
-  overflow-y: auto;
+
 }
 
-*/
+.bg {
+  text-align: center;
+  float: left;
+  margin-left: 335px;
+  width:1080px;
+  height:640px;
+  background-image : url('./img/3.jpg');
+  background-size : cover;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 420px) {
+  .read {
+    float: left;
+    width: 400px;
+    height: 362px;
+
+  }
+  .posts {
+    margin-top: 50px;
+    float:left;
+  }
+  .bg {
+    width: 0%;
+    height: 0%;
+  }
+  .listnull {
+    width: 90%;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .miniroom {
+    margin-top: 60px;
+    float:left;
+  }
+
+  #title {
+    margin-left: 16px;
+    margin-top: 30px;
+    width: 300px;
+    font-size: 23px;
+  }
+  #body {
+    width: 300px;
+  }
+}
