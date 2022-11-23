@@ -12,16 +12,13 @@
 ## 🎉주요 기능
 <br>
 
-* Create, Read, Update, Delete 기능이 구현되었습니다.
+* Create, Read, Update, Delete이 가능한 다이어리 기능이  구현되었습니다.
 * Home 화면에서 날짜 보기가 가능합니다.
 
 <br>
 
 ## 🎈프로젝트 사용 방법
-<br>
-
-``` npm start ```
-
+        ``` npm start ```  
 ## 💰 추가할 기능
 <br>
 
